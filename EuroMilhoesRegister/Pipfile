@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+loguru = "*"
+grpcio = "*"
+grpcio-tools = "*"
+protobuf = "*"
+setuptools = "==69.0.1"
+update = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
+
+[scripts]
+start = "python3 register_euromil"
