@@ -1,0 +1,2 @@
+## Comando para gerar os ficheiros para a implementação do cliente gRPC a partir do ficheiro proto
+- python -m grpc_tools.protoc -I./protos --python_out=./server/server_euromil/ --pyi_out=./server/server_euromil/  --grpc_python_out=./server/server_euromil/  ./protos/*

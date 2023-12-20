@@ -21,7 +21,6 @@ class GrpcClient():
 
         try:
             response = self.stub.RegisterEuroMil(request)
-            print("Response:", response)
             return response
         except Exception as e:
             logger.error("Error to send the messsage to the Server {}".format(e))
