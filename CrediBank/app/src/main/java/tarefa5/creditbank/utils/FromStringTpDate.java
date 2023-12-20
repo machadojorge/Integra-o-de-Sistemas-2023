@@ -1,4 +1,4 @@
-package main.tarefa5.creditbank.utils;
+package tarefa5.creditbank.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,7 +19,7 @@ public class FromStringTpDate {
             dateConverted = dateFormat.parse(date);
 
             // Imprimir o objeto Date
-            System.out.println("Data e Hora: " + dateFormat.format(dateConverted));
+           // System.out.println("Data e Hora: " + dateFormat.format(dateConverted));
             return dateConverted;
         }
         catch(Exception e)
@@ -34,7 +34,6 @@ public class FromStringTpDate {
         String pattern = "yyyy-MM-dd'T'HH:mm:ss";
 
         String dataConvertedString = " ";
-        System.out.println("String");
 
         try
         {
@@ -44,7 +43,7 @@ public class FromStringTpDate {
             dataConvertedString = dateFormat.format(date);
 
             // Imprimir o objeto Date
-            System.out.println("Data e Hora em String: " + dataConvertedString);
+           // System.out.println("Data e Hora em String: " + dataConvertedString);
             return dataConvertedString;
         }
         catch(Exception e)

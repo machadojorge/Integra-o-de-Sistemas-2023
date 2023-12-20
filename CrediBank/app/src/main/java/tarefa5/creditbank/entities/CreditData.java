@@ -1,4 +1,4 @@
-package main.tarefa5.creditbank.entities;
+package tarefa5.creditbank.entities;
 public class CreditData {
     
     private Long creditAAccountId;
@@ -6,7 +6,7 @@ public class CreditData {
 
     public CreditData()
     {
-        this.creditAAccountId = " ";
+        this.creditAAccountId = 0L;
         this.ammount = 0.0f;
     }
 
@@ -50,7 +50,7 @@ public class CreditData {
 
     @Override
     public String toString() {
-        return "CreditData [creditAAccountId=" + creditAAccountId + ", ammount=" + ammount + "]";
+        return "CreditData: --> Crredit Account Id: " + creditAAccountId + ", Ammount: " + ammount;
     }
 
     

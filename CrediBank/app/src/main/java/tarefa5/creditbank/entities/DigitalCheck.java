@@ -1,6 +1,6 @@
-package main.tarefa5.creditbank.entities;
+package tarefa5.creditbank.entities;
 
-import main.tarefa5.creditbank.utils.FromStringTpDate;
+import tarefa5.creditbank.utils.FromStringTpDate;
 import java.util.Date;
 
 public class DigitalCheck {
@@ -36,7 +36,7 @@ public class DigitalCheck {
     @Override
     public String toString() {
         String checkDataString = FromStringTpDate.convertDateToString(checkDate);
-        return "DigitalCheck [checkDate=" + checkDate + ", checkId=" + checkDataString + "]";
+        return "Digital Check: --> Date: " + checkDataString  +" CheckId: " + checkId;
     }
 
     

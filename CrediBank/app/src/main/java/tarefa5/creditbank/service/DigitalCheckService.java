@@ -1,18 +1,14 @@
-package main.tarefa5.creditbank.service;
+package tarefa5.creditbank.service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Date;
-
-import main.tarefa5.creditbank.entities.CreditData;
-import main.tarefa5.creditbank.entities.DigitalCheck;
-import main.tarefa5.creditbank.utils.FromStringTpDate;
-import org.json.JSONArray;
-import org.json.JSONException;
+import tarefa5.creditbank.entities.CreditData;
+import tarefa5.creditbank.entities.DigitalCheck;
+import tarefa5.creditbank.utils.FromStringTpDate;
 import org.json.JSONObject;
-import org.json.JSONString;
+
 
 public class DigitalCheckService {
     
@@ -23,9 +19,11 @@ public class DigitalCheckService {
         try
         {
             String urlComplete = String.format("%s%d/ammount/%f", url, creditData.getCreditAAccountId(), creditData.getAmmount());
-            System.out.println("URL Complet: " + urlComplete);
+           //System.out.println("URL Complet: " + urlComplete);
 
             URL urlForGet = new URL(urlComplete); 
+            
+            System.out.println("URL: " + urlForGet + "\n");
             return urlForGet;
         }
         catch(Exception e)
@@ -49,7 +47,13 @@ public class DigitalCheckService {
             connect.setRequestMethod("GET");
 
             int responseCode = connect.getResponseCode();
+
+            if (responseCode != 200)
+            {
+                return null;
+            }
             StringBuffer response = new StringBuffer();
+         
 
             try
             {
@@ -61,21 +65,21 @@ public class DigitalCheckService {
                 }
                 in.close();
 
-                JSONArray jsonArray = new JSONArray(response.toString());
+                // Extrair os dados da mensagem e guarda-los em um objeto
+                String jsonString = response.toString();
+                JSONObject jsonObject = new JSONObject(jsonString);
 
-                for (int i = 0; i<jsonArray.lenght(); i++)
-                {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    // Antes de atribuir a data ao objecto do tipo "Date", vamos converter a string para o Objecto Date chamando o metodo 
-                    // da pasta utils "FromStringTpDate.convertStringToDate(String)"
-                    digitalCheck.setCheckDate(new Date(FromStringTpDate.convertStringToDate(jsonObject.getLong("date"))));
-                    digitalCheck.setCheckId(Long.parseLong(jsonObject.getLong("checkID")));
-                    return digitalCheck;
-                }
+                String date = jsonObject.getString("date");
+                long checkID = jsonObject.getLong("checkID");
+                digitalCheck.setCheckDate(FromStringTpDate.convertStringToDate(date));
+                digitalCheck.setCheckId(checkID);
+                
+                return digitalCheck;
             }
             catch (Exception e)
             {
                 System.err.println("Error to get the response: " + e.getMessage());
+                return null;
             }
 
         
@@ -83,9 +87,10 @@ public class DigitalCheckService {
         catch (Exception e)
         {
             System.out.println("Error to Connect to the URL " + e.getMessage());
+            return null;
         }
 
-    return digitalCheck;
+   
    }
 
 }
