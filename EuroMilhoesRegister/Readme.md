@@ -1,7 +1,7 @@
 # Cliente gRPC EuroMil
 
 ## Sobre
-- Este projeto pretende a criação de um cliente . . .
+- Implementação de um cliente gRPC que vai enviar uma mensagem para o Servidor, através do método”RegisterEuroMil”, passando um objecto do tipo "euromil_pb2.RegisterRequest" como parametro, que contem a chave (key) e o Id do check. Deveria receber do servidor, como resposta se teve sucesso ou não o registo.
 
 ## Aspetos importantes
 - é utilizado um input de dados atraves do teclado para inserir os valores (em string), para serem enviados via gRPC para o servidor.
@@ -33,5 +33,20 @@
 - register_data --> uma pasta que contem uma classe onde são armazenados os dados introduzidos do teclado, é apenas uma classe auxiliar para ficar mais organizado o codigo.
 - Requirements --> é o ficheiro onde estão todos os packages utilizados neste projeto.
 
+## Descrição das Classes:
+- ConnectGrpc():
+    - Criação de um cliente GrpcClient()
+    - Inicia a comunicação com o servidor, utilizando o host e port fornecidos, chamando o metodo da classe GrpcCliente().
+    - Recebe os dados vindos da classe Main() e chama um metodo da classe GrpcCliente() para enviar para o que possa enviar para o servidor.
+
+- GrpcClient():
+    - Metodo que cria o canal de comunicação e o stub;
+    - metodo que e chamado na classe ConnectGrpc(), para enviar a mensagem para o servidor atraves do método ".stub.RegisterEuroMil(request)", em que o "request" é um objecto do tipo "euromil_pb2.RegisterRequest()".
+    
+- CommunicationData():
+    - classe que armazena os dados introduzidos em um objecto, para serem utilizados na mensagem que é enviada ao Seervidor.
+
 ## Comando para gerar os ficheiros para a implementação do cliente gRPC a partir do ficheiro proto
 - python -m grpc_tools.protoc -I./protos --python_out=./register_euromil/grpc_client/ --pyi_out=./register_euromil/grpc_client/ --grpc_python_out=./register_euromil/grpc_client/ ./protos/*
+
+## Para testar este cliente, existe no repositorio um projecto de um servidor gRPC. É so executar o comando "pipenv run start", no terminal, no root do projecto do Servidor e ele inicia o servidor. 
