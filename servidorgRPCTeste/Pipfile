@@ -4,11 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-grpcio = "*"
-grpcio-tools = "*"
-loguru = "*"
-protobuf = "*"
+grpcio = "==1.60.0"
+grpcio-tools = "==1.60.0"
+loguru = "==0.7.2"
+protobuf = "==4.25.1"
 setuptools = "*"
+style = "==1.1.0"
+update = "==0.0.1"
 
 [dev-packages]
 

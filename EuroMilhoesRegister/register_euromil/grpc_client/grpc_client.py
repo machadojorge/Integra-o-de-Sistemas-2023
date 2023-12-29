@@ -14,7 +14,6 @@ class GrpcClient():
         self.stub = euromil_pb2_grpc.EuromilStub(self.channel)
     
     def sendMessage(self, key: str, check_id:str):
-        print("""""")
         print(str(key))
         print(str(check_id))
         request = euromil_pb2.RegisterRequest(key=key,checkid=check_id )

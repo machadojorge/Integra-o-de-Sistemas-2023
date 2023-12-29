@@ -15,7 +15,7 @@ def main():
     # Caso seja necessário defenir os dados do (KEY, CHECK_ID) por defeito, basta
     # commentar o código anterior e descomentar as seguinte linhas
     # start = ConnectGrpc("localhost", 5050)
-    # start.sendKeyCheck("KEY", "Value")
+    # start.sendKeyCheck("KEY", "1234567897894561")
 
 if __name__=="__main__":
     main()

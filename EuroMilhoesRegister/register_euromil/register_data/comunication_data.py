@@ -36,6 +36,9 @@ class CommunicationData():
         key = input("Enter the Key: ")
         self.set_key(key)
         check_id = input("Enter the Check ID: ")
+        while (len(check_id) != 16):
+            check_id = input("Inválid length for the Id of Check: Enter the Check ID with 16 digits: ")
+        
         self.set_check_id(check_id)
 
 

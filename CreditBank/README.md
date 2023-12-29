@@ -31,5 +31,3 @@
 
 # Run the project
  - java -jar target/mavenproject-1.0.0-jar-with-dependencies.jar
-
-# Para tesar o Cliente é necessário uma API REST com o end point defenido e que receba dois parametros como defenido no exemplo
