@@ -1,5 +1,5 @@
-tarefa5/creditbank/entities/CreditData.class
-tarefa5/creditbank/entities/DigitalCheck.class
-tarefa5/creditbank/utils/FromStringTpDate.class
-tarefa5/creditbank/Main.class
-tarefa5/creditbank/service/DigitalCheckService.class
+tarefa5\creditbank\utils\FromStringTpDate.class
+tarefa5\creditbank\Main.class
+tarefa5\creditbank\service\DigitalCheckService.class
+tarefa5\creditbank\entities\DigitalCheck.class
+tarefa5\creditbank\entities\CreditData.class

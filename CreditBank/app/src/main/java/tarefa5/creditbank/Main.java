@@ -19,25 +19,25 @@ public class Main {
         String urlString = "https://credibank.intsis.utad.pt:8080/check/";
         
         // URL de teste para API privada
-         //String urlString = "http://localhost:8080/check/";
+        //String urlString = "http://localhost:8080/check/";
          
          // A linha de codigo seguinte é para se poder introduzir os dados (Credit account id e ammount)
         // atraves de inputs pelo teclado
-         CreditData creditData = getCreditInformation();
-        // CreditData creditData = new CreditData(1234567899874563L, 100.0f);
-        // System.out.println(creditData);
+         //CreditData creditData = getCreditInformation();
+        
+         CreditData creditData = new CreditData(1234567899874563L, 100.0f);
 
-        // DigitalCheck digitalCheck = DigitalCheckService.getDigitalCheck(urlString, creditData);
-        // if (digitalCheck != null)
-        // {
-        //     System.out.println(digitalCheck);
+        DigitalCheck digitalCheck = DigitalCheckService.getDigitalCheck(urlString, creditData);
+        if (digitalCheck != null)
+        {
+            System.out.println(digitalCheck);
              
-        // }
-        // else
-        // {
-        //      System.out.println("Error to get the Response from Server!");
+        }
+        else
+        {
+             System.out.println("Error to get the Response from Server!");
 
-        // }
+        }
       
         
     }
