@@ -1,7 +1,5 @@
 package tarefa5.creditbank;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Scanner;
 
 import tarefa5.creditbank.entities.CreditData;
@@ -16,16 +14,17 @@ public class Main {
     public static void main(String[] args) {
        
         // URL principal
-        String urlString = "https://credibank.intsis.utad.pt:8080/check/";
+        //String urlString = "https://credibank.intsis.utad.pt:8080/check/";
         
         // URL de teste para API privada
-        //String urlString = "http://localhost:8080/check/";
+        String urlString = "http://localhost:8080/check/";
          
          // A linha de codigo seguinte é para se poder introduzir os dados (Credit account id e ammount)
         // atraves de inputs pelo teclado
          //CreditData creditData = getCreditInformation();
         
-         CreditData creditData = new CreditData(1234567899874563L, 100.0f);
+         // A linha seguinte são os dados por default. Para poder introduzir pelo teclado, basta comentar a linha seguinte e decomentar a linha anterior (26)
+        CreditData creditData = new CreditData(1234567899874563L, 100.0f);
 
         DigitalCheck digitalCheck = DigitalCheckService.getDigitalCheck(urlString, creditData);
         if (digitalCheck != null)
@@ -63,9 +62,7 @@ public class Main {
                 creditAAccountId = sc.nextLong();
                
             }
-            System.out.println("Ler alguma coisa");;
             sc.nextLine(); // Limpa a entrada inválida
-            System.out.println("já li");
         }
 
         System.out.print("Ammount: ");
