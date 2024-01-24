@@ -1,0 +1,17 @@
+syntax = "proto3";
+option java_package = "apostas.euromil.grpc";
+
+package apostas_euromil_grpc;
+
+service MyService {
+    rpc sayHello (HelloRequest) returns (HelloResponse);
+}
+
+message HelloRequest {
+    string name = 1;
+    string idade = 2;
+}
+
+message HelloResponse {
+    string greeting = 1;
+}

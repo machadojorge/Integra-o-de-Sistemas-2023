@@ -1,0 +1,2 @@
+#### generate the files from the proto file #####
+- python -m grpc_tools.protoc -I./protos --python_out=./grpc_test/connect/ --pyi_out=./grpc_test/connect/ --grpc_python_out=./grpc_test/connect/ ./protos/helloworld.proto

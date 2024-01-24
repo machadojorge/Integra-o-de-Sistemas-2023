@@ -1,0 +1,6 @@
+-i https://pypi.org/simple
+grpcio==1.57.0
+grpcio-tools==1.57.0
+loguru==0.7.0
+protobuf==4.24.2 ; python_version >= '3.7'
+setuptools==68.1.2 ; python_version >= '3.8'
