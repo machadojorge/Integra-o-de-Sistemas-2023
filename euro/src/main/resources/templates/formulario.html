@@ -3,14 +3,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Formulário</title>
+    <title>Generat Check</title>
 </head>
 <body>
     <form action="/submeter" method="get">
-        <label for="credit_account_id">credit_account_id:</label>
+        <label for="Credit Account ID:">credit_account_id:</label>
         <input type="text" id="credit_account_id" name="credit_account_id"/>
 
-        <label for="ammount">Ammount:</label>
+        <label for="Ammount:">Ammount:</label>
         <input type="text" id="ammount" name="ammount"/>
 
             <h2 th:text="${mensagem_credit_account}"></h2>

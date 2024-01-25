@@ -1,0 +1,35 @@
+<!-- Arquivo resultado.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Sucesso!</title>
+</head>
+<body>
+    <p></p>
+    <p></p>
+    <h2>Check Id tatus:  <p th:text="${checkmessage}"></p> </h2>
+    <p></p>
+    <h2>Data:  <p th:text="${data}"></p> </h2>
+    <p></p>
+    <h2>CheckID:  <p th:text="${checkid}"></p> </h2>
+    <p></p>
+    <p></p>
+
+
+    <h1>Want to try your luck?</h1>
+
+    <button onclick="irParaPaginaB()">Register bet!</button>
+
+    <script>
+        function irParaPaginaB() {
+            // Obter o valor do parâmetro visível
+            var parametro = document.getElementById('checkid').innerText;
+
+            // Navegar para a outra página com o parâmetro
+            window.location.href = '/euromil_register?parametro=' + parametro;
+        }
+    </script>
+   
+</body>
+</html>
