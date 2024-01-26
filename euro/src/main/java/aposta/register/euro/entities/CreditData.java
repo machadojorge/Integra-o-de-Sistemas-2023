@@ -22,7 +22,7 @@ public class CreditData {
     }
 
     public void setCreditAAccountId(Long creditAAccountId) {
-        if ((creditAAccountId == null) || (creditAAccountId.toString().length()!=16))
+        if ((creditAAccountId == null) || (creditAAccountId.toString().length()!=8))
         {
             System.out.println("Inválid credit Account Id! The length of the credit Account must be 16");
         }

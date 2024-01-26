@@ -1,34 +1,26 @@
 package aposta.register.euro.resources;
 
-import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.el.util.Validation;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
-
 import aposta.register.euro.entities.CreditData;
 import aposta.register.euro.entities.DigitalCheck;
 import aposta.register.euro.grpc.ClientEuromil;
 import aposta.register.euro.service.DigitalCheckService;
 import aposta.register.euro.utils.FromStringTpDate;
 import aposta.register.euro.utils.Valid;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Controller
 public class ApiClienteResource {
     
     private String checkID;
-
-
-    @GetMapping("/formulario")
+    @GetMapping("/creditBank")
     public String exibirFormulario() {
         return "formulario";
     }
@@ -37,18 +29,15 @@ public class ApiClienteResource {
     public String submeterFormulario(@RequestParam String credit_account_id,
                                      @RequestParam String ammount,
                                      Model model) {
-        
-                                        // so para testes
-                                        this.checkID = credit_account_id;
 
         System.out.println("credit_account_id: " + credit_account_id + " --> Ammount:  "+ ammount) ;
         // Verificar se os valores introduzidos respeitam as condiçoes para os valores
-        // credita_account_id --> 16 digitos decimais
+        // credita_account_id --> 8 digitos decimais
         boolean checkAccount = Valid.checkCreditAccountID(credit_account_id);
         if (checkAccount == false)
         {
             // caso não Esteja correto o credit_account_id, mostra uma mensagem de informação!
-            model.addAttribute("mensagem_credit_account", "Account ID must be 16 digits!");
+            model.addAttribute("mensagem_credit_account", "Account ID must be 8 digits!");
             return "formulario";
         }
 
@@ -68,7 +57,8 @@ public class ApiClienteResource {
         CreditData creditData = new CreditData(Long.parseLong(credit_account_id), Integer.parseInt(ammount));
 
         // 2º Defenir a String com o URL
-        String url = "http://localhost:9090/check/";
+        String url = "http://ken.utad.pt:8181/check/";
+
 
         // 3º Chamar o Service para fazer o pedido com o URL obtido e guardar a resposta em um objeto DigitalCheck
         DigitalCheck digitalCheck = DigitalCheckService.getDigitalCheck(url, creditData);
@@ -82,30 +72,21 @@ public class ApiClienteResource {
             model.addAttribute("checkmessage", "CheckID Complete with success!");
             model.addAttribute("data", data);
             model.addAttribute("checkid", checkID);
+            this.checkID = checkID;
             return "submitEuro";
         }
 
-        // String result = " ";
-        // try{
-        //     result = client.registerEuroMil(credit_account_id, ammount);
-        //     System.out.println("Result: " + result);
-        // }catch (Exception e){
-        //     System.out.println("Some error ocurred in the Server: " + e.getMessage());
-        //     result = "Error to connect to the Server to get the Check";
-        // }
-     
         model.addAttribute("mensagem_ammount", "It is not possible generate the Check. Please try again!");
         return "formulario";
     }
 
 
 
-    // Vai mostrar um HTML com as janelas para introduzir os numeros do euro milhoes 
+    // Vai mostrar uma View HTML com as janelas para introduzir os numeros do euro milhoes 
     @GetMapping("/euromil_register")
     public String paginaB( @RequestParam("checkid") String valor, Model model) {
       
         model.addAttribute("checkid", checkID);
-       // model.addAttribute("mensagem_ammount", "It is not possible generate the Check. Please try again!");
         return "euromil_register";
         
     }
@@ -134,18 +115,36 @@ public class ApiClienteResource {
         list.add(val3);
         list.add(val4);
         list.add(val5);
-        
+
+        // Verifica se contem numeros Repetidos
+        boolean result = Valid.checkUniqueValues(list);
+        if (result == false)
+        {
+            model.addAttribute("message_number", "Some invalid number! The number need to be Unique!");
+             return "euromil_register";
+        }
+
         List<String> nstr = new ArrayList<String>();
         nstr.add(star1);
         nstr.add(star2);
+
+         // Verifica se contem estrelas Repetidas
+         result = Valid.checkUniqueValues(nstr);
+         if (result == false)
+         {
+             model.addAttribute("message_number", "Some invalid number! The number need to be unique!");
+              return "euromil_register";
+         }
      
-        boolean result = Valid.euroNumber(list, 50);
+        // Verifica se são todos numeros entre 1 e 50 
+        result = Valid.euroNumber(list, 50);
         if (result == false)
         {
             model.addAttribute("message_number", "Some invalid number! The number need to be between 1 - 50");
              return "euromil_register";
         }
 
+        // Verifica se as estrelas são numeros entre m 1 e 9
         result = Valid.euroNumber(nstr, 9);
         if (result == false)
         {
@@ -153,11 +152,14 @@ public class ApiClienteResource {
              return "euromil_register";
         }
 
+        // cria uma lista unica para criar uma string com todos os numeros da chave
         list.add(nstr.get(0));
         list.add(nstr.get(1));
         String Key = Valid.createString(list);
         ClientEuromil client = new ClientEuromil();
         String resultMessage = " ";
+
+        // Faz a Requesição gRPC
         try{
             resultMessage = client.registerEuroMil(Key, this.checkID);
             System.out.println("Result: " + result);
@@ -165,42 +167,12 @@ public class ApiClienteResource {
             System.out.println("Some error ocurred in the Server: " + e.getMessage());
             resultMessage = "Error to connect to the Server to get the Check";
         }
+        // devolve a Resposta obtida no gRPC para uma View
         model.addAttribute("mensagem", resultMessage);
+        model.addAttribute("checkID", checkID);
        return "result";
     }
 
- 
-
-
-    // ("/euromil_register")
-    // public String paginaB(@RequestParam String parametro) {
-    //     ClientEuromil client = new ClientEuromil();
-    //     String result = " ";
-    //     try{
-    //         result = client.registerEuroMil(credit_account_id, ammount);
-    //         System.out.println("Result: " + result);
-    //     }catch (Exception e){
-    //         System.out.println("Some error ocurred in the Server: " + e.getMessage());
-    //         result = "Error to connect to the Server to get the Check";
-    //     }
-     
-    //     model.addAttribute("mensagem_ammount", "It is not possible generate the Check. Please try again!");
-    //     return "formulario";
-    //     return "paginaB"; // Página associada ao endpoint B
-    // }
-    // // @GetMapping("/hello")
-    // public String Register(@RequestParam(value = "check") String check, @RequestParam(value = "ammount")String ammount) {
-    
-    //     System.out.println("CheckID: " + check + " --> Ammount:  "+ ammount) ;
-    //     String result = " ";
-    //     try{
-    //         result = client.registerEuroMil(check, ammount);
-    //         System.out.println("Result: " + result);
-    //     }catch (Exception e){
-    //     }
-     
-    //     return "Hello  --->" + result;
-    // }
 }
 
 

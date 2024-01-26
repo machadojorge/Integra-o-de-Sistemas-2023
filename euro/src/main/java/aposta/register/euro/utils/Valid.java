@@ -1,11 +1,13 @@
 package aposta.register.euro.utils;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Valid {
     public static boolean checkCreditAccountID(String creditAccount)
     {   
-        if (!(creditAccount.length() == 16))
+        if (!(creditAccount.length() == 8))
         {
             return false;
         }
@@ -47,6 +49,22 @@ public class Valid {
 
         return true;
     }
+
+    // Este método verifica se não ha elementos repetidos na chave do Euromil!
+    public static <T> boolean checkUniqueValues(List<T> lista) {
+        Set<T> set = new HashSet<>();
+
+        for (T elemento : lista) {
+            if (!set.add(elemento)) {
+                // Se não foi possível adicionar o elemento ao conjunto, significa que é duplicado
+                return false;
+            }
+        }
+
+        // Se chegou até aqui, todos os elementos são únicos
+        return true;
+    }
+
 
     public static boolean euroNumber(List<String> numbers, Integer limit)
     {
