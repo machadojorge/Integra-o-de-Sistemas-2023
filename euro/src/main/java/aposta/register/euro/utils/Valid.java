@@ -1,5 +1,7 @@
 package aposta.register.euro.utils;
 
+import java.util.List;
+
 public class Valid {
     public static boolean checkCreditAccountID(String creditAccount)
     {   
@@ -45,4 +47,49 @@ public class Valid {
 
         return true;
     }
+
+    public static boolean euroNumber(List<String> numbers, Integer limit)
+    {
+        int nInt = 0;
+        System.out.println(numbers);
+        System.out.println(numbers.size());
+        for (String n : numbers)
+        {
+            System.out.println("N: " + n);
+            if (n == null)
+            {
+                System.out.println("Error to Parse the Number! The number must be between 0 - 50");
+                return false;
+            }
+            try{
+                System.out.println(n);
+                 nInt = Integer.parseInt(n);
+                 System.out.println(nInt);
+            }
+            catch(Exception e){
+                System.out.println("Error to Parse the number: " + e.getMessage());
+                return false;
+            }
+
+            if (nInt > limit && nInt <= 0)
+            {
+                System.out.println("Error in the number Value: The Number must be between 1 -- 50");
+                return false;
+            }
+        }
+        return true;    
+    }
+
+
+   
+    public static String createString(List<String> list)
+    {
+        String number = "";
+        for(String n : list)
+        {
+            number = number + n;
+        }
+        return number;
+    }
 }
+

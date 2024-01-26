@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Numbers of Euromil!</title>
+</head>
+<body>
+
+    <h1>Numbers of Euromil: </h1>
+
+    <h2> <p th:text="${checkid}"></p></h2>
+    <form action="/euromil_register" method="post">
+        <label for="Number 1:">Numer 1:</label>
+        <input type="text" id="val1" name="val1"/>
+
+        <label for="Number 2:">Numer 2:</label>
+        <input type="text" id="val2" name="val2"/>
+
+        <label for="Number 3:">Numer 3:</label>
+        <input type="text" id="val3" name="val3"/>
+
+        <label for="Number 4:">Numer 4:</label>
+        <input type="text" id="val4" name="val4"/>
+
+        <label for="Number 5:">Numer 5:</label>
+        <input type="text" id="val5" name="val5"/>
+
+        <label for="Start 1:">Star 1:</label>
+        <input type="text" id="star1" name="star1"/>
+
+        <label for="Start 2:">Star2 1:</label>
+        <input type="text" id="star2" name="star2"/>
+
+
+    
+
+            <h2 th:text="${message_number}"></h2>
+            <h2 th:text="${message_star}"></h2>
+
+            <button type="Submit">Register!</button>
+    </form>
+  
+</body>
+</html>

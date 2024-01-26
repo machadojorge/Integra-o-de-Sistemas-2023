@@ -6,30 +6,31 @@
     <title>Sucesso!</title>
 </head>
 <body>
+    <h1>Your check has been successfully obtained!</h1>
     <p></p>
     <p></p>
-    <h2>Check Id tatus:  <p th:text="${checkmessage}"></p> </h2>
-    <p></p>
-    <h2>Data:  <p th:text="${data}"></p> </h2>
-    <p></p>
-    <h2>CheckID:  <p th:text="${checkid}"></p> </h2>
+    <h2>Check Id tatus: </h2>
+    <p th:text="${checkmessage}"></p> 
     <p></p>
     <p></p>
-
+    <h2>Data:  </h2>
+    <p th:text="${data}"></p>
+    <p></p>
+    <p></p>
+    <h2>CheckID: </p> </h2>
+    <p th:text="${checkid}">
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
 
     <h1>Want to try your luck?</h1>
 
-    <button onclick="irParaPaginaB()">Register bet!</button>
-
-    <script>
-        function irParaPaginaB() {
-            // Obter o valor do parâmetro visível
-            var parametro = document.getElementById('checkid').innerText;
-
-            // Navegar para a outra página com o parâmetro
-            window.location.href = '/euromil_register?parametro=' + parametro;
-        }
-    </script>
+  
+    <form action="/euromil_register" method="get">
+        <input type="hidden" id="checkid" name="checkid" value="${checkid}">
+        <button type="submit">Register Euromil</button>
+    </form>
    
 </body>
 </html>

@@ -1,11 +1,14 @@
 package aposta.register.euro.resources;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.el.util.Validation;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
@@ -22,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 public class ApiClienteResource {
     
+    private String checkID;
+
 
     @GetMapping("/formulario")
     public String exibirFormulario() {
@@ -33,6 +38,9 @@ public class ApiClienteResource {
                                      @RequestParam String ammount,
                                      Model model) {
         
+                                        // so para testes
+                                        this.checkID = credit_account_id;
+
         System.out.println("credit_account_id: " + credit_account_id + " --> Ammount:  "+ ammount) ;
         // Verificar se os valores introduzidos respeitam as condiçoes para os valores
         // credita_account_id --> 16 digitos decimais
@@ -57,10 +65,10 @@ public class ApiClienteResource {
         
         // Fazer uma Requesição à API
         // 1º Criar um objeto com os dados de entrada
-        CreditData creditData = new CreditData(Long.parseLong(credit_account_id), Float.parseFloat(ammount));
+        CreditData creditData = new CreditData(Long.parseLong(credit_account_id), Integer.parseInt(ammount));
 
         // 2º Defenir a String com o URL
-        String url = "http://localhost:8080/check/";
+        String url = "http://localhost:9090/check/";
 
         // 3º Chamar o Service para fazer o pedido com o URL obtido e guardar a resposta em um objeto DigitalCheck
         DigitalCheck digitalCheck = DigitalCheckService.getDigitalCheck(url, creditData);
@@ -94,40 +102,75 @@ public class ApiClienteResource {
 
     // Vai mostrar um HTML com as janelas para introduzir os numeros do euro milhoes 
     @GetMapping("/euromil_register")
-    public String paginaB(@RequestParam String parametro, Model model) {
+    public String paginaB( @RequestParam("checkid") String valor, Model model) {
       
-     
+        model.addAttribute("checkid", checkID);
        // model.addAttribute("mensagem_ammount", "It is not possible generate the Check. Please try again!");
-        return "euroRegister";
+        return "euromil_register";
         
     }
 
     // quando fizer o submit, vem para este post com os valores todos para juntar 
     // na Key e enviar por grpc!
     @PostMapping("/euromil_register")
-    public String postMethodName(@RequestBody String checkID,
-                                    @RequestParam String val1,
-                                    @RequestParam String val2,
-                                    @RequestParam String val3,
-                                    @RequestParam String val4,
-                                    @RequestParam String val5,
-                                    @RequestParam String star1,
-                                    @RequestParam String star2,
+    public String postMethodName(//@RequestParam("checkID") String checkID,
+                                    @RequestParam("val1") String val1,
+                                    @RequestParam("val2") String val2,
+                                    @RequestParam("val3") String val3,
+                                    @RequestParam("val4") String val4,
+                                    @RequestParam("val5") String val5,
+                                    @RequestParam("star1") String star1,
+                                    @RequestParam("star2") String star2,
                                     Model model)  
     {
-        String Key = " ";
+        System.out.println("Adicionados à lista!");
+        System.out.println(checkID);
+        System.out.println(val1);
+    
+        
+        List<String> list = new ArrayList<String>();
+        list.add(val1);
+        list.add(val2);
+        list.add(val3);
+        list.add(val4);
+        list.add(val5);
+        
+        List<String> nstr = new ArrayList<String>();
+        nstr.add(star1);
+        nstr.add(star2);
+     
+        boolean result = Valid.euroNumber(list, 50);
+        if (result == false)
+        {
+            model.addAttribute("message_number", "Some invalid number! The number need to be between 1 - 50");
+             return "euromil_register";
+        }
+
+        result = Valid.euroNumber(nstr, 9);
+        if (result == false)
+        {
+            model.addAttribute("message_number", "Some invalid number! The Stars need to be between 1 - 5");
+             return "euromil_register";
+        }
+
+        list.add(nstr.get(0));
+        list.add(nstr.get(1));
+        String Key = Valid.createString(list);
         ClientEuromil client = new ClientEuromil();
-        String result = " ";
+        String resultMessage = " ";
         try{
-            result = client.registerEuroMil(Key, checkID);
+            resultMessage = client.registerEuroMil(Key, this.checkID);
             System.out.println("Result: " + result);
         }catch (Exception e){
             System.out.println("Some error ocurred in the Server: " + e.getMessage());
-            result = "Error to connect to the Server to get the Check";
+            resultMessage = "Error to connect to the Server to get the Check";
         }
-        
+        model.addAttribute("mensagem", resultMessage);
        return "result";
     }
+
+ 
+
 
     // ("/euromil_register")
     // public String paginaB(@RequestParam String parametro) {

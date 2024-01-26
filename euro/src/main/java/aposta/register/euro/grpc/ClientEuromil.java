@@ -16,7 +16,7 @@ public class ClientEuromil {
 
         public ClientEuromil() {
             // Crie um canal gRPC para o servidor
-            channel = ManagedChannelBuilder.forAddress("localhost", 9090) 
+            channel = ManagedChannelBuilder.forAddress("localhost", 9091) 
                     .usePlaintext()
                     .build();
     
