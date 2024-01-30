@@ -3,6 +3,7 @@ package aposta.register.euro.entities;
 import aposta.register.euro.utils.FromStringTpDate;
 import java.util.Date;
 
+// Classe para armazenar os dados recebidos do Request GET à API REST
 public class DigitalCheck {
     
     private Date checkDate;

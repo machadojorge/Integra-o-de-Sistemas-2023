@@ -56,19 +56,20 @@ public class ApiClienteResource {
         // 1º Criar um objeto com os dados de entrada
         CreditData creditData = new CreditData(Long.parseLong(credit_account_id), Integer.parseInt(ammount));
 
-        // 2º Defenir a String com o URL
+        // 2º Defenir a String com o URL para o Request À API REST
         String url = "http://ken.utad.pt:8181/check/";
 
 
         // 3º Chamar o Service para fazer o pedido com o URL obtido e guardar a resposta em um objeto DigitalCheck
         DigitalCheck digitalCheck = DigitalCheckService.getDigitalCheck(url, creditData);
 
-        // Verificar se o digitalCheck é null;
+        // Verificar se o digitalCheck é diferente de null;
         if (digitalCheck!= null)
         {
             String data = FromStringTpDate.convertDateToString(digitalCheck.getCheckDate());
             String checkID = Long.toString(digitalCheck.getCheckId());
         
+            // Isto é apenas para mostras as mensagens no html da View
             model.addAttribute("checkmessage", "CheckID Complete with success!");
             model.addAttribute("data", data);
             model.addAttribute("checkid", checkID);
@@ -76,6 +77,7 @@ public class ApiClienteResource {
             return "submitEuro";
         }
 
+        // se forn null, devolve outra mensagem para a View
         model.addAttribute("mensagem_ammount", "It is not possible generate the Check. Please try again!");
         return "formulario";
     }
@@ -104,11 +106,7 @@ public class ApiClienteResource {
                                     @RequestParam("star2") String star2,
                                     Model model)  
     {
-        System.out.println("Adicionados à lista!");
-        System.out.println(checkID);
-        System.out.println(val1);
-    
-        
+        // Adicionar os parametros a uma lista
         List<String> list = new ArrayList<String>();
         list.add(val1);
         list.add(val2);
@@ -155,6 +153,8 @@ public class ApiClienteResource {
         // cria uma lista unica para criar uma string com todos os numeros da chave
         list.add(nstr.get(0));
         list.add(nstr.get(1));
+
+        // Cria a String para ser enviada no pedido gRPC
         String Key = Valid.createString(list);
         ClientEuromil client = new ClientEuromil();
         String resultMessage = " ";

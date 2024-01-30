@@ -105,8 +105,18 @@ public class Valid {
         String number = "";
         for(String n : list)
         {
-            number = number + n;
+            if (n.length() < 2)
+            {
+                number = number + "0" + n + " "; 
+            }
+            else
+            {
+                number = number + n + " ";
+            }
+            
         }
+        // Criar uma string de acordo ao pedido no gRPC
+        number = number.substring(0, number.length() - 1); 
         return number;
     }
 }
