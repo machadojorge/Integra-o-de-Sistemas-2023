@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClientEuromil {
     
+    // atributos privados que vao armazenar o channel gRPC e o Stub gRPC
     private final ManagedChannel channel;
     private final EuromilGrpc.EuromilBlockingStub blockingStub;
 
@@ -26,6 +27,7 @@ public class ClientEuromil {
         }
     
 
+        // Método responsavel por chamar o método do Serviço gRPC para enviar o pedido ao Servidor
         public String registerEuroMil(String key, String checkid) {
            
             // Crie uma mensagem de solicitação
@@ -43,9 +45,10 @@ public class ClientEuromil {
             return response.getMessage();
         }
     
-
+        
+        // Encerrar o canal quando já não é necessário
         public void shutdown() {
-            // Encerrar o canal quando já não é necessário
+            
             channel.shutdown();
         }
 }

@@ -1,6 +1,7 @@
 package aposta.register.euro.entities;
 
 // Classe que vai armazenar os valores introduzidos da View inicial, o Credit_account_id e o ammount 
+// tem algumas validações para a introdução dos dados, para respeitar o formato Pedido
 public class CreditData {
     
     private Long creditAAccountId;

@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Set;
 
 public class Valid {
+
+    // Este método verifica o inputo do Numero de Conta, verifica se tem 8 digitos e se todos eles são numeros
+    // caso contrario devolve um false
     public static boolean checkCreditAccountID(String creditAccount)
     {   
         if (!(creditAccount.length() == 8))
@@ -24,6 +27,8 @@ public class Valid {
 
     }
 
+    // Este método verifica se o montante introduzido no input respeita os requesitos, se é um numero e é o valor 10 (Requesito do Servidor API REST)
+    // devolve um false se isto falhar
     public static boolean checkAmmount(String ammount)
     {
         if (ammount.length() ==0)
@@ -65,7 +70,8 @@ public class Valid {
         return true;
     }
 
-
+    // Este método verifica os valores introduzidos para a chave do Euromil. Recebe uma lista de valores
+    // e percorre a lista a verificar se são numeros, se são repetidos e se estão entre o intervalo aceite 
     public static boolean euroNumber(List<String> numbers, Integer limit)
     {
         int nInt = 0;
@@ -76,7 +82,7 @@ public class Valid {
             System.out.println("N: " + n);
             if (n == null)
             {
-                System.out.println("Error to Parse the Number! The number must be between 0 - 50");
+                System.out.println("Error to Parse the Number! The number must be between 0 - {}" + nInt);
                 return false;
             }
             try{
@@ -89,9 +95,9 @@ public class Valid {
                 return false;
             }
 
-            if (nInt > limit && nInt <= 0)
+            if (nInt > limit || nInt <= 0)
             {
-                System.out.println("Error in the number Value: The Number must be between 1 -- 50");
+                System.out.println("Error in the number Value: The Number must be between 1 -- {}" + nInt);
                 return false;
             }
         }
@@ -99,7 +105,8 @@ public class Valid {
     }
 
 
-   
+   // Este método recebe uma lista de valores e vai criar uma string, no formato correto, para a chave do Euromil.
+   // devolve essa chave pronta a ser enviada no pedido gRPC
     public static String createString(List<String> list)
     {
         String number = "";

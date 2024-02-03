@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class FromStringTpDate {
     
+    // Este método traduz uma String para um Objecto Date de acordo com o respetivo formato Date desejado
     public static Date convertStringToDate(String date)
     {
         String pattern = "yyyy-MM-dd'T'HH:mm:ss";
@@ -29,6 +30,7 @@ public class FromStringTpDate {
         return dateConverted;
     }
 
+    // Este método traduz um objeto Date para uma String
     public static String convertDateToString(Date date)
     {
         String pattern = "yyyy-MM-dd'T'HH:mm:ss";
@@ -53,15 +55,4 @@ public class FromStringTpDate {
         return dataConvertedString;
     }
 
-    // public static void main(String[] args)
-    // {
-    //     String Data = "2018-01-01T00:00:00";
-
-    //     Date a = FromStringTpDate.convertStringToDate(Data);
-    //     System.err.println(a.getClass());
-
-    //     String b = FromStringTpDate.convertDateToString(a);
-
-    //     System.out.println("String Data: " + b);
-    // }
 }

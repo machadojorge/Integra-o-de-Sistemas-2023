@@ -20,23 +20,31 @@ import aposta.register.euro.utils.Valid;
 public class ApiClienteResource {
     
     private String checkID;
+
+    // Metodo GET para o endpoint /creditBank, que devolve a primeira View para o utilizador 
+    // introduzir os dados da conta e o montante
     @GetMapping("/creditBank")
     public String exibirFormulario() {
         return "formulario";
     }
 
+
+    // Método Get para o endpoint "/submeter" que é chamado quando o utilizador submete os dados da conta e do montante
+    // esses dados vêm por método GET no URL
+    // Apos isso, esses dados vão ser validados, se estão nos formatos corretos e só depois e chamado o método à classe
+    // DigitalCheckService para fazer o pedido GET à API REST
     @GetMapping("/submeter")
     public String submeterFormulario(@RequestParam String credit_account_id,
                                      @RequestParam String ammount,
                                      Model model) {
 
-        System.out.println("credit_account_id: " + credit_account_id + " --> Ammount:  "+ ammount) ;
         // Verificar se os valores introduzidos respeitam as condiçoes para os valores
         // credita_account_id --> 8 digitos decimais
         boolean checkAccount = Valid.checkCreditAccountID(credit_account_id);
         if (checkAccount == false)
         {
             // caso não Esteja correto o credit_account_id, mostra uma mensagem de informação!
+            // e devolve novamente a view para introduzirem novamente os dados
             model.addAttribute("mensagem_credit_account", "Account ID must be 8 digits!");
             return "formulario";
         }
@@ -48,11 +56,12 @@ public class ApiClienteResource {
         if (checkAmmount == false)
         {
               // caso não Esteja correto o amount mostra uma mensagem de informação!
+               // e devolve novamente a view para introduzirem novamente os dados
               model.addAttribute("mensagem_ammount", "The Ammount must be 10 credits");
               return "formulario";
         }
         
-        // Fazer uma Requesição à API
+        // Fazer uma Requesição à API REST"
         // 1º Criar um objeto com os dados de entrada
         CreditData creditData = new CreditData(Long.parseLong(credit_account_id), Integer.parseInt(ammount));
 
@@ -69,7 +78,7 @@ public class ApiClienteResource {
             String data = FromStringTpDate.convertDateToString(digitalCheck.getCheckDate());
             String checkID = Long.toString(digitalCheck.getCheckId());
         
-            // Isto é apenas para mostras as mensagens no html da View
+            // Isto é apenas para mostras as mensagens no html da View se a resposta for diferente de null
             model.addAttribute("checkmessage", "CheckID Complete with success!");
             model.addAttribute("data", data);
             model.addAttribute("checkid", checkID);
@@ -77,14 +86,14 @@ public class ApiClienteResource {
             return "submitEuro";
         }
 
-        // se forn null, devolve outra mensagem para a View
+        // se forn null, devolve outra mensagem para a View 
+        // mostra novamente a view para introduzir novamente os dados
         model.addAttribute("mensagem_ammount", "It is not possible generate the Check. Please try again!");
         return "formulario";
     }
 
 
-
-    // Vai mostrar uma View HTML com as janelas para introduzir os numeros do euro milhoes 
+    // Vai mostrar uma View HTML com as janelas para introduzir os numeros para a chave do Euromil 
     @GetMapping("/euromil_register")
     public String paginaB( @RequestParam("checkid") String valor, Model model) {
       
@@ -93,8 +102,8 @@ public class ApiClienteResource {
         
     }
 
-    // quando fizer o submit, vem para este post com os valores todos para juntar 
-    // na Key e enviar por grpc!
+    // quando fizer o submit no botão do formulário, vem para este POST com os valores todos para juntar 
+    // na chave do Euromil e enviar por grpc para o Servidor para registar a aposta!
     @PostMapping("/euromil_register")
     public String postMethodName(//@RequestParam("checkID") String checkID,
                                     @RequestParam("val1") String val1,
@@ -106,7 +115,8 @@ public class ApiClienteResource {
                                     @RequestParam("star2") String star2,
                                     Model model)  
     {
-        // Adicionar os parametros a uma lista
+        // Fazer o pedido gRPC
+        // 1º Adicionar os parametros a uma lista
         List<String> list = new ArrayList<String>();
         list.add(val1);
         list.add(val2);
@@ -114,52 +124,59 @@ public class ApiClienteResource {
         list.add(val4);
         list.add(val5);
 
-        // Verifica se contem numeros Repetidos
+        // 2º Verifica se contem numeros Repetidos, se são todos numeros 
         boolean result = Valid.checkUniqueValues(list);
         if (result == false)
         {
+            // Se detetar alguma irregularidade, devolve novamente a mesma view para introduzir os numeros, junto da mensagem de erro
             model.addAttribute("message_number", "Some invalid number! The number need to be Unique!");
              return "euromil_register";
         }
 
+        // 3º Adicionar as estrelas a uma outra lista
         List<String> nstr = new ArrayList<String>();
         nstr.add(star1);
         nstr.add(star2);
 
-         // Verifica se contem estrelas Repetidas
+        // 4º Verifica se contem numeros Repetidos, se são todos numeros
          result = Valid.checkUniqueValues(nstr);
          if (result == false)
          {
+            // Se detetar alguma irregularidade, devolve novamente a mesma view para introduzir os numeros, junto da mensagem de erro
              model.addAttribute("message_number", "Some invalid number! The number need to be unique!");
               return "euromil_register";
          }
      
-        // Verifica se são todos numeros entre 1 e 50 
+        // 5º Verifica se são todos numeros entre 1 e 50 
         result = Valid.euroNumber(list, 50);
         if (result == false)
         {
+            // Se detetar alguma irregularidade, devolve novamente a mesma view para introduzir os numeros, junto da mensagem de erro
             model.addAttribute("message_number", "Some invalid number! The number need to be between 1 - 50");
              return "euromil_register";
         }
 
-        // Verifica se as estrelas são numeros entre m 1 e 9
+        // 6º Verifica se as estrelas são numeros entre 1 e 9
         result = Valid.euroNumber(nstr, 9);
         if (result == false)
         {
+            // Se detetar alguma irregularidade, devolve novamente a mesma view para introduzir os numeros, junto da mensagem de erro
             model.addAttribute("message_number", "Some invalid number! The Stars need to be between 1 - 5");
              return "euromil_register";
         }
 
-        // cria uma lista unica para criar uma string com todos os numeros da chave
+        // 7º cria uma lista unica para criar uma string com todos os numeros da chave
         list.add(nstr.get(0));
         list.add(nstr.get(1));
 
-        // Cria a String para ser enviada no pedido gRPC
+        // 8º Chama um método para criar a String com todos os valores no formato que o Servidor gRPC exige
         String Key = Valid.createString(list);
+
+        // 9º Cria um objeto da classe que implementa o método do serviço gRPC, permitindo que o construtor já crie o channel e o Stub
         ClientEuromil client = new ClientEuromil();
         String resultMessage = " ";
 
-        // Faz a Requesição gRPC
+        // 10º Faz a Requesição gRPC ao Servidor
         try{
             resultMessage = client.registerEuroMil(Key, this.checkID);
             System.out.println("Result: " + result);

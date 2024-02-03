@@ -1,13 +1,6 @@
 package aposta.register.euro.service;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import aposta.register.euro.entities.CreditData;
@@ -40,6 +33,7 @@ public class DigitalCheckService {
    }
 
 
+   // Este método é o que faz o pedido get À API REST atravez da classe RESTTemplate
    public static DigitalCheck getDigitalCheck(String url, CreditData creditData)
    {
         DigitalCheck digitalCheck = new DigitalCheck();
@@ -49,15 +43,12 @@ public class DigitalCheckService {
             // Criação de uma instância de RestTemplate
             RestTemplate restTemplate = new RestTemplate();
 
-        // Fazendo uma requisição GET e recebendo a resposta
+        // Fazendo uma requisição GET à API REST e recebendo a resposta
             Map<String,Object> dados = restTemplate.getForObject(urlConnection.toString(), Map.class);
            var result = dados.get("date");
            String date = result.toString();
            Long checkID = Long.parseLong(dados.get("checkID").toString());
-           System.out.println(("Date: " + date));
-           System.out.println("CheckID: " + checkID);
           
-     
             try
             {
                 digitalCheck.setCheckDate(FromStringTpDate.convertStringToDate(date));
